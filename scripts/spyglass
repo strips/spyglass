@@ -15,7 +15,7 @@ set -Eeou pipefail
 ### Global Variables
 BASE_SPY_PATH="$(dirname "$(readlink -f "${0}")")"
 PY_BIN="$(command -v python)"
-SPYGLASS_CFG="${HOME}/printer_data/config/spyglass.conf"
+SPYGLASS_CFG="/etc/spyglass/config/spyglass.conf"
 
 ### Helper Messages
 debug_msg() {
