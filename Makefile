@@ -24,7 +24,7 @@ install: ## Install Spyglass as service
 	@sudo ln -sf "${PWD}/scripts/spyglass" $(BIN_PATH)
 	@printf "\nCreate configuration directory if not existing ...\n"
 	@mkdir -p $(CONF_PATH)
-	@printf "\nCopying basic configuration file ...\n"
+	@printf "\nCopying basic configuration file if not existing ...\n"
 	@cp -n "${PWD}/resources/spyglass.conf" $(CONF_PATH)
 	@printf "\nPopulate new service file ... \n"
 	@sudo systemctl daemon-reload
