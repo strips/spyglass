@@ -19,6 +19,11 @@ all:
 	$(MAKE) help
 
 install: ## Install Spyglass as service
+	# Assert CONF_PATH is not a file with extension
+	@if echo "$(CONF_PATH)" | grep -q '\.[a-zA-Z0-9]*$$'; then \
+        echo "Error: CONF_PATH should only contain the directory. CONF_PATH=$(CONF_PATH)"; \
+        exit 1; \
+    fi
 	@printf "\nCopying systemd service file ...\n"
 	@sudo cp -f "${PWD}/resources/spyglass.service" $(SYSTEMD)
 	@sudo sed -i "s/%USER%/$(USER)/g" $(SYSTEMD)/spyglass.service
