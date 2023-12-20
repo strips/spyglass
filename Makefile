@@ -21,13 +21,13 @@ all:
 install: ## Install Spyglass as service
 	# Assert CONF_PATH is not a file with extension
 	@if echo "$(CONF_PATH)" | grep -q '\.[a-zA-Z0-9]*$$'; then \
-        echo "Error: CONF_PATH should only contain the directory. CONF_PATH=$(CONF_PATH)"; \
+        echo "Error: CONF_PATH should only contain the directory."; \
         exit 1; \
     fi
 	@printf "\nCopying systemd service file ...\n"
 	@sudo cp -f "${PWD}/resources/spyglass.service" $(SYSTEMD)
 	@sudo sed -i "s/%USER%/$(USER)/g" $(SYSTEMD)/spyglass.service
-	@sudo sed -i "s|%CONFIG%|$(CONF_PATH)/spyglass.conf|g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s|%CONFIG%|${CONF_PATH%/}/spyglass.conf|g" $(SYSTEMD)/spyglass.service
 	@printf "\nCopying Spyglass launch script ...\n"
 	@sudo ln -sf "${PWD}/scripts/spyglass" $(BIN_PATH)
 	@printf "\nCreate configuration directory if not existing ...\n"
