@@ -33,7 +33,7 @@ install: ## Install Spyglass as service
 	@printf "\nCreate configuration directory if not existing ...\n"
 	@mkdir -p $(CONF_PATH)
 	@printf "\nCopying basic configuration file ...\n"
-	@cp -f "${PWD}/resources/spyglass.conf" $(CONF_PATH)
+	@cp -i "${PWD}/resources/spyglass.conf" $(CONF_PATH)
 	@printf "\nPopulate new service file ... \n"
 	@sudo systemctl daemon-reload
 	@mkdir -p $(PRINTER_DATA_PATH)
@@ -53,7 +53,7 @@ uninstall: ## Uninstall Spyglass
 	@sudo sed '/spyglass/d' $(PRINTER_DATA_PATH)/moonraker.asvc > $(PRINTER_DATA_PATH)/moonraker.asvc
 
 update: ## Update Spyglass (via git Repository)
-	@git fetch && git pull
+	@git pull
 
 upgrade-moonraker: ## In case of old version of Spyglass being upgraded to newer version with Moonraker update manager compatibility
 	@printf "Upgrading systemctl ...\n"
