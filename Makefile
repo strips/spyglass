@@ -32,12 +32,15 @@ install: ## Install Spyglass as service
 	@sudo ln -sf "${PWD}/scripts/spyglass" $(BIN_PATH)
 	@printf "\nCreate configuration directory if not existing ...\n"
 	@sudo mkdir -p $(CONF_PATH)
+	@sudo chown $(USER):$(USER) $(CONF_PATH)
 	@printf "\nCopying basic configuration file ...\n"
 	@sudo cp -n "${PWD}/resources/spyglass.conf" $(CONF_PATH)
+	@sudo chown $(USER):$(USER) "$(CONF_PATH)/spyglass.conf"
 	@printf "\nPopulate new service file ... \n"
 	@sudo systemctl daemon-reload
-	@sudo mkdir -p $(PRINTER_DATA_PATH)
-	@sudo echo "spyglass" >> $(PRINTER_DATA_PATH)/moonraker.asvc
+	@mkdir -p $(PRINTER_DATA_PATH)
+	@sudo chown $(USER):$(USER) $(PRINTER_DATA_PATH)
+	@echo "spyglass" >> $(PRINTER_DATA_PATH)/moonraker.asvc
 	@printf "\nEnable Spyglass service ... \n"
 	@sudo systemctl enable spyglass
 	@printf "\nTo be sure, everything is setup please reboot ...\n"
