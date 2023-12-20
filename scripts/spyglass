@@ -15,9 +15,7 @@ set -Eeou pipefail
 ### Global Variables
 BASE_SPYGLASS_PATH="$(dirname "$(readlink -f "${0}")")"
 PY_BIN="$(command -v python)"
-SPYGLASS_CONFIG_PATH="${1:-${HOME}/printer_data/config/spyglass.conf}" # Use argument 1 for config file path if set, else use default
-SPYGLASS_CONFIG_FILE_NAME=$(basename "$SPYGLASS_CONFIG_PATH")
-
+SPYGLASS_CONFIG_PATH="${HOME}/printer_data/config/spyglass.conf" # Use argument 1 for config file path if set, else use default
 
 ### Helper Messages
 debug_msg() {
@@ -28,7 +26,7 @@ help_msg() {
     echo -e "spyglass - Picamera2 MJPEG Streamer\nUsage:"
     echo -e "\t spyglass [Options]"
     echo -e "\n\t\t-h Prints this help."
-    echo -e "\n\t\t-c </path/to/configfile>\n\t\t\tPath to your ${SPYGLASS_CONFIG_FILE_NAME}"
+    echo -e "\n\t\t-c </path/to/configfile>\n\t\t\tPath to your spyglass.conf"
     echo -e "\n\t\t-v Show spyglass version\n"
 }
 
