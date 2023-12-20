@@ -32,7 +32,7 @@ install: ## Install Spyglass as service
 	@printf "\nCreate configuration directory if not existing ...\n"
 	@mkdir -p $(CONF_PATH)
 	@printf "\nCopying basic configuration file ...\n"
-	@cp -i "${PWD}/resources/spyglass.conf" $(CONF_PATH)
+	@cp -n "${PWD}/resources/spyglass.conf" $(CONF_PATH)
 	@printf "\nPopulate new service file ... \n"
 	@sudo systemctl daemon-reload
 	@mkdir -p $(PRINTER_DATA_PATH)
