@@ -19,7 +19,6 @@ all:
 	$(MAKE) help
 
 install: ## Install Spyglass as service
-	# Assert CONF_PATH is not a file with extension
 	@if echo "$(CONF_PATH)" | grep -q '\.[a-zA-Z0-9]*$$'; then \
         echo "Error: CONF_PATH should only contain the directory."; \
         exit 1; \
