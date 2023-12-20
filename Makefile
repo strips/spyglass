@@ -13,6 +13,7 @@ SYSTEMD = /etc/systemd/system
 BIN_PATH = /usr/local/bin
 PRINTER_DATA_PATH = /home/$(USER)/printer_data
 CONF_PATH ?= $(PRINTER_DATA_PATH)/config
+CONF_PATH = $(realpath $(CONF_PATH)) # remove trailing slash
 
 
 all:
@@ -26,7 +27,7 @@ install: ## Install Spyglass as service
 	@printf "\nCopying systemd service file ...\n"
 	@sudo cp -f "${PWD}/resources/spyglass.service" $(SYSTEMD)
 	@sudo sed -i "s/%USER%/$(USER)/g" $(SYSTEMD)/spyglass.service
-	@sudo sed -i "s|%CONFIG%|${CONF_PATH%/}/spyglass.conf|g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s|%CONFIG%|$(CONF_PATH)/spyglass.conf|g" $(SYSTEMD)/spyglass.service
 	@printf "\nCopying Spyglass launch script ...\n"
 	@sudo ln -sf "${PWD}/scripts/spyglass" $(BIN_PATH)
 	@printf "\nCreate configuration directory if not existing ...\n"
