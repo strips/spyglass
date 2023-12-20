@@ -25,7 +25,8 @@ install: ## Install Spyglass as service
     fi
 	@printf "\nCopying systemd service file ...\n"
 	@sudo cp -f "${PWD}/resources/spyglass.service" $(SYSTEMD)
-	@sudo sed -i "s/%USER%/$(USER)/g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s|%USER%|$(USER)|g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s|%HOME%|${HOME}|g" $(SYSTEMD)/spyglass.service
 	@sudo sed -i "s|%CONFIG%|$(realpath $(CONF_PATH))/spyglass.conf|g" $(SYSTEMD)/spyglass.service
 	@printf "\nCopying Spyglass launch script ...\n"
 	@sudo ln -sf "${PWD}/scripts/spyglass" $(BIN_PATH)
@@ -57,8 +58,8 @@ update: ## Update Spyglass (via git Repository)
 upgrade-moonraker: ## In case of old version of Spyglass being upgraded to newer version with Moonraker update manager compatibility
 	@printf "Upgrading systemctl ...\n"
 	@sudo cp -f "${PWD}/resources/spyglass.service" $(SYSTEMD)
-	@sudo sed -i "s/%USER%/$(USER)/g" $(SYSTEMD)/spyglass.service
-	@sudo sed -i "s/%CONFIG%/$(CONF_PATH)\/spyglass.conf/g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s|%USER%|$(USER)|g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s|%CONFIG%|$(CONF_PATH)/spyglass.conf|g" $(SYSTEMD)/spyglass.service
 	@printf "Saving backup of moonraker.asvc file as %s ...\n" $(PRINTER_DATA_PATH)/moonraker.asvc.bak
 	@sudo cp -f $(PRINTER_DATA_PATH)/moonraker.asvc $(PRINTER_DATA_PATH)/moonraker.asvc.bak
 	@printf "Upgrading Moonraker update manager authorization ...\n"
