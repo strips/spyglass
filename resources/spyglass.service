@@ -21,6 +21,6 @@ Type=simple
 User=%USER%
 RemainAfterExit=Yes
 WorkingDirectory=/home/%USER%/spyglass
-ExecStart= /usr/local/bin/spyglass
+ExecStart=/usr/local/bin/spyglass --config %CONFIG%
 Restart=on-failure
 RestartSec=5

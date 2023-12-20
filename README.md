@@ -3,7 +3,7 @@
 > **Please note that this project is in a very early stage. Use at your own risk. Think about contributing to the project
 if you find that something is not working, and you are able to fix it. Every contribution is appreciated.**
 
-A simple mjpeg server for Picamera2.
+A simple Picamera2 based mjpeg server for Klipper.
 
 With Spyglass you are able to stream videos from a camera that is supported by [libcamera](http://libcamera.org) like
 the [Raspberry Pi Camera Module 3](https://www.raspberrypi.com/products/camera-module-3/).
@@ -12,7 +12,7 @@ Current version: 0.13.0
 
 ## Prerequisites
 
--   Raspberry Pi OS Bullseye
+-   Raspberry Pi OS Bookworm
 -   [Picamera2](https://github.com/raspberrypi/picamera2) - Already installed on Raspberry Pi OS Bullseye
 -   Python 3.8+
 -   A camera supported by libcamera and connected to the Raspberry Pi
@@ -157,7 +157,7 @@ origin: https://github.com/roamingthings/spyglass.git
 managed_services: spyglass
 ```
 > Make sure moonraker.asvc contains `spyglass` in the list: `cat ~/printer_data/moonraker.asvc | grep spyglass`.
-> 
+>
 > If not there execute: `make upgrade-moonraker`
 
 ### Configuration

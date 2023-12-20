@@ -12,7 +12,8 @@ USER = $(shell whoami)
 SYSTEMD = /etc/systemd/system
 BIN_PATH = /usr/local/bin
 PRINTER_DATA_PATH = /home/$(USER)/printer_data
-CONF_PATH = $(PRINTER_DATA_PATH)/config
+CONF_PATH ?= $(PRINTER_DATA_PATH)/config
+
 
 all:
 	$(MAKE) help
@@ -21,8 +22,11 @@ install: ## Install Spyglass as service
 	@printf "\nCopying systemd service file ...\n"
 	@sudo cp -f "${PWD}/resources/spyglass.service" $(SYSTEMD)
 	@sudo sed -i "s/%USER%/$(USER)/g" $(SYSTEMD)/spyglass.service
+	@sudo sed -i "s/%CONFIG%/$(CONF_PATH)\/spyglass.conf/g" $(SYSTEMD)/spyglass.service
 	@printf "\nCopying Spyglass launch script ...\n"
 	@sudo ln -sf "${PWD}/scripts/spyglass" $(BIN_PATH)
+	@printf "\nCreate configuration directory if not existing ...\n"
+	@mkdir -p $(CONF_PATH)
 	@printf "\nCopying basic configuration file ...\n"
 	@cp -f "${PWD}/resources/spyglass.conf" $(CONF_PATH)
 	@printf "\nPopulate new service file ... \n"

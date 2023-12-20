@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#### spyglass - Picamera2 MJPG Streamer
+#### spyglass - Picamera2 MJPEG Streamer
 ####
 #### https://github.com/roamingthings/spyglass
 ####
@@ -13,9 +13,11 @@ set -Eeou pipefail
 
 
 ### Global Variables
-BASE_SPY_PATH="$(dirname "$(readlink -f "${0}")")"
+BASE_SPYGLASS_PATH="$(dirname "$(readlink -f "${0}")")"
 PY_BIN="$(command -v python)"
-SPYGLASS_CFG="${HOME}/printer_data/config/spyglass.conf"
+SPYGLASS_CONFIG_PATH="${1:-${HOME}/printer_data/config/spyglass.conf}" # Use argument 1 for config file path if set, else use default
+SPYGLASS_CONFIG_FILE_NAME=$(basename "$SPYGLASS_CONFIG_PATH")
+
 
 ### Helper Messages
 debug_msg() {
@@ -23,10 +25,10 @@ debug_msg() {
 }
 
 help_msg() {
-    echo -e "spyglass - Picamera2 MJPG Streamer\nUsage:"
+    echo -e "spyglass - Picamera2 MJPEG Streamer\nUsage:"
     echo -e "\t spyglass [Options]"
     echo -e "\n\t\t-h Prints this help."
-    echo -e "\n\t\t-c </path/to/configfile>\n\t\t\tPath to your spyglass.conf"
+    echo -e "\n\t\t-c </path/to/configfile>\n\t\t\tPath to your ${SPYGLASS_CONFIG_FILE_NAME}"
     echo -e "\n\t\t-v Show spyglass version\n"
 }
 
@@ -39,7 +41,7 @@ wrong_args_msg() {
 
 ## Version of spyglass
 self_version() {
-    pushd "${BASE_SPY_PATH}" &> /dev/null
+    pushd "${BASE_SPYGLASS_PATH}" &> /dev/null
     git describe --always --tags
     popd &> /dev/null
 }
@@ -61,13 +63,13 @@ check_py_version() {
 }
 
 get_config() {
-    if [[ -n "${SPYGLASS_CFG}" ]] && [[ -f "${SPYGLASS_CFG}" ]]; then
-        printf "INFO: Configuration file found in %s\n" "${SPYGLASS_CFG}"
+    if [[ -n "${SPYGLASS_CONFIG_PATH}" ]] && [[ -f "${SPYGLASS_CONFIG_PATH}" ]]; then
+        printf "INFO: Configuration file found in %s\n" "${SPYGLASS_CONFIG_PATH}"
         print_config
         # shellcheck disable=SC1090
-        . "${SPYGLASS_CFG}"
+        . "${SPYGLASS_CONFIG_PATH}"
     else
-        printf "ERROR: No configuration file found in %s! [EXITING]\n" "${SPYGLASS_CFG}"
+        printf "ERROR: No configuration file found in %s! [EXITING]\n" "${SPYGLASS_CONFIG_PATH}"
         exit 1
     fi
 }
@@ -75,26 +77,26 @@ get_config() {
 print_config() {
     local prefix
     prefix="\t\t"
-    printf "INFO: Print Configfile: '%s'\n" "${SPYGLASS_CFG}"
-    (sed '/^#.*/d;/./,$!d;/^$/d' | cut -d'#' -f1) < "${SPYGLASS_CFG}" | \
+    printf "INFO: Print Configfile: '%s'\n" "${SPYGLASS_CONFIG_PATH}"
+    (sed '/^#.*/d;/./,$!d;/^$/d' | cut -d'#' -f1) < "${SPYGLASS_CONFIG_PATH}" | \
     while read -r line; do
         printf "%b%s\n" "${prefix}" "${line}"
     done
 }
 
 run_spyglass() {
-    local bind_adress
+    local bind_address
     # ensure default for NO_PROXY
     [[ -n "${NO_PROXY}" ]] || NO_PROXY="true"
 
     if [[ "${NO_PROXY}" != "true" ]]; then
-        bind_adress="127.0.0.1"
+        bind_address="127.0.0.1"
     else
-        bind_adress="0.0.0.0"
+        bind_address="0.0.0.0"
     fi
 
-    "${PY_BIN}" "$(dirname "${BASE_SPY_PATH}")/run.py" \
-    --bindaddress "${bind_adress}" \
+    "${PY_BIN}" "$(dirname "${BASE_SPYGLASS_PATH}")/run.py" \
+    --bindaddress "${bind_address}" \
     --port "${HTTP_PORT:-8080}" \
     --resolution "${RESOLUTION:-640x480}" \
     --fps "${FPS:-15}" \
@@ -121,7 +123,7 @@ while getopts ":vhc:d" arg; do
             exit 0
         ;;
         c )
-            SPYGLASS_CFG="${OPTARG}"
+            SPYGLASS_CONFIG_PATH="${OPTARG}"
         ;;
         d )
             set -x
