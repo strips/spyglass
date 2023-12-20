@@ -47,6 +47,8 @@ install: ## Install Spyglass as service
 	@printf "Thanks for choosing Spyglass ...\n"
 
 uninstall: ## Uninstall Spyglass
+	@printf "\nStop Spyglass service ... \n"
+	@sudo systemctl stop spyglass
 	@printf "\nDisable Spyglass service ... \n"
 	@sudo systemctl disable spyglass
 	@printf "\nRemove systemd service file ...\n"
