@@ -94,8 +94,8 @@ def run_server(bind_address, port, output, stream_url='/stream', snapshot_url='/
             self.send_header('Content-Length', str(len(frame) + extra_len))
 
     logger.info('Server listening on %s:%d', bind_address, port)
-    logger.info(f'Streaming URL: http://{socket.gethostname()}:{port}/{stream_url}')
-    logger.info(f'Snapshot URL: http://{socket.gethostname()}:{port}/{snapshot_url}')
+    logger.info(f'Streaming URL: http://{socket.gethostname()}:{port}{stream_url}')
+    logger.info(f'Snapshot URL: http://{socket.gethostname()}:{port}{snapshot_url}')
     address = (bind_address, port)
     current_server = StreamingServer(address, StreamingHandler)
     current_server.serve_forever()
